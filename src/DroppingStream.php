@@ -5,10 +5,8 @@ namespace GuzzleHttp\Stream;
  * Stream decorator that begins dropping data once the size of the underlying
  * stream becomes too full.
  */
-class DroppingStream implements StreamInterface
+class DroppingStream extends StreamDecoratorTrait implements StreamInterface
 {
-    use StreamDecoratorTrait;
-
     private $maxLength;
 
     /**

@@ -19,10 +19,8 @@ namespace GuzzleHttp\Stream;
  *
  * @unstable This class is subject to change.
  */
-class AsyncReadStream implements StreamInterface
+class AsyncReadStream extends StreamDecoratorTrait implements StreamInterface
 {
-    use StreamDecoratorTrait;
-
     /** @var callable|null Fn used to notify writers the buffer has drained */
     private $drain;
 
@@ -67,7 +65,7 @@ class AsyncReadStream implements StreamInterface
      */
     public function __construct(
         StreamInterface $buffer,
-        array $config = []
+        array $config = array()
     ) {
         if (!$buffer->isReadable() || !$buffer->isWritable()) {
             throw new \InvalidArgumentException(
@@ -79,7 +77,7 @@ class AsyncReadStream implements StreamInterface
             $this->size = $config['size'];
         }
 
-        static $callables = ['pump', 'drain'];
+        static $callables = array('pump', 'drain');
         foreach ($callables as $check) {
             if (isset($config[$check])) {
                 if (!is_callable($config[$check])) {
@@ -129,7 +127,7 @@ class AsyncReadStream implements StreamInterface
      * @return array Returns an array containing the buffer used to buffer
      *               data, followed by the ready to use AsyncReadStream object.
      */
-    public static function create(array $options = [])
+    public static function create(array $options = array())
     {
         $maxBuffer = isset($options['max_buffer'])
             ? $options['max_buffer']
@@ -151,16 +149,16 @@ class AsyncReadStream implements StreamInterface
         // Call the on_write callback if an on_write function was provided.
         if (isset($options['write'])) {
             $onWrite = $options['write'];
-            $buffer = FnStream::decorate($buffer, [
+            $buffer = FnStream::decorate($buffer, array(
                 'write' => function ($string) use ($buffer, $onWrite) {
                     $result = $buffer->write($string);
                     $onWrite($buffer, $string);
                     return $result;
                 }
-            ]);
+            ));
         }
 
-        return [$buffer, new self($buffer, $options)];
+        return array($buffer, new self($buffer, $options));
     }
 
     public function getSize()

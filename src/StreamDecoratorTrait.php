@@ -7,7 +7,7 @@ use GuzzleHttp\Stream\Exception\CannotAttachException;
  * Stream decorator trait
  * @property StreamInterface stream
  */
-trait StreamDecoratorTrait
+abstract class StreamDecoratorTrait
 {
     /**
      * @param StreamInterface $stream Stream to decorate

@@ -15,20 +15,20 @@ class Stream implements StreamInterface
     private $customMetadata;
 
     /** @var array Hash of readable and writable stream types */
-    private static $readWriteHash = [
-        'read' => [
+    private static $readWriteHash = array(
+        'read' => array(
             'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
             'rb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
             'c+b' => true, 'rt' => true, 'w+t' => true, 'r+t' => true,
             'x+t' => true, 'c+t' => true, 'a+' => true,
-        ],
-        'write' => [
+        ),
+        'write' => array(
             'w' => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true,
             'c+' => true, 'wb' => true, 'w+b' => true, 'r+b' => true,
             'x+b' => true, 'c+b' => true, 'w+t' => true, 'r+t' => true,
             'x+t' => true, 'c+t' => true, 'a' => true, 'a+' => true,
-        ],
-    ];
+        ),
+    );
 
     /**
      * Create a new stream based on the input type.
@@ -39,10 +39,10 @@ class Stream implements StreamInterface
      * @param resource|string|StreamInterface $resource Entity body data
      * @param array                           $options  Additional options
      *
-     * @return Stream
+     * @return StreamInterface
      * @throws \InvalidArgumentException if the $resource arg is not valid.
      */
-    public static function factory($resource = '', array $options = [])
+    public static function factory($resource = '', array $options = array())
     {
         $type = gettype($resource);
 
@@ -99,7 +99,7 @@ class Stream implements StreamInterface
      *
      * @throws \InvalidArgumentException if the stream is not a stream resource
      */
-    public function __construct($stream, $options = [])
+    public function __construct($stream, $options = array())
     {
         if (!is_resource($stream)) {
             throw new \InvalidArgumentException('Stream must be a resource');
@@ -111,7 +111,7 @@ class Stream implements StreamInterface
 
         $this->customMetadata = isset($options['metadata'])
             ? $options['metadata']
-            : [];
+            : array();
 
         $this->attach($stream);
     }
@@ -247,7 +247,7 @@ class Stream implements StreamInterface
     public function getMetadata($key = null)
     {
         if (!$this->stream) {
-            return $key ? null : [];
+            return $key ? null : array();
         } elseif (!$key) {
             return $this->customMetadata + stream_get_meta_data($this->stream);
         } elseif (isset($this->customMetadata[$key])) {

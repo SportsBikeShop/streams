@@ -6,10 +6,8 @@ use GuzzleHttp\Stream\Exception\SeekException;
 /**
  * Decorator used to return only a subset of a stream
  */
-class LimitStream implements StreamInterface
+class LimitStream extends StreamDecoratorTrait implements StreamInterface
 {
-    use StreamDecoratorTrait;
-
     /** @var int Offset to start reading from */
     private $offset;
 
